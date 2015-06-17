@@ -1,5 +1,5 @@
 {
-    "name": "dnadesign/silverstripe-consultation",
+    "name": "dnadesign/silverstripe-consultations",
     "description": "Build consultation forms for community engagement.",
     "type": "silverstripe-module",
     "keywords": ["silverstripe", "consultation", "engagement", "form"],
