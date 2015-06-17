@@ -11,5 +11,6 @@
     "require": {
         "silverstripe/framework": "~3.1",
         "silverstripe-australia/gridfieldextensions": "*",
+        "dnadesign/silverstripe-typeform": "dev-master"
     }
 }

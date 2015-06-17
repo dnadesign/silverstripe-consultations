@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package wcc_longtermplan
+ * @package consultations
  */
 class TypeformSubmissionExtension extends DataExtension {
 	
@@ -16,7 +16,6 @@ class TypeformSubmissionExtension extends DataExtension {
 		'SupportsIdeaRanking' => 'Int',
 		'Sentiment' => "Int",
 		'FeedbackText' => 'Text',
-		'InTheFuture' => 'Boolean',
 		'PromotedHomePage' => 'Boolean',
 		'PromotedSummary' => 'Boolean'
 	);
@@ -53,26 +52,6 @@ class TypeformSubmissionExtension extends DataExtension {
 		$age = null; 
 		$type = null;
 		$suburb = null;
-
-		if($parent = $this->owner->Parent()) {
-			if($parent->ClassName == "InTheFuturePage") {
-				$this->owner->InTheFuture = true;
-
-				foreach($this->owner->Answers() as $answer) {
-					if($question = $answer->Question()) {
-						if($question->Title == "In the future, Wellington will...") {
-							$this->owner->FeedbackText = $answer->Value;
-						} else if($question->Title == "Your first name") {
-							$this->owner->FirstName = $answer->Value;
-						} else if($question->Title == "Where do you live?") {
-							$this->owner->Suburb = $answer->Value;
-						}
-					}
-				}
-
-				$this->owner->write();
-			}
-		}
 
 		foreach($this->owner->Answers() as $answer) {
 			if($question = $answer->Question()) {
@@ -163,7 +142,7 @@ class TypeformSubmissionExtension extends DataExtension {
 	}
 
 	public function Link($action = null) {
-		$page = ResultSummaryPage::get()->first();
+		$page = ConsultationsSummaryPage::get()->first();
 
 		return $page->Link(Controller::join_links('comment', $action, $this->owner->ID));
 	}
