@@ -1,0 +1,4 @@
+<p><strong><% if $TotalSupport %>$TotalSupport<% else %>0<% end_if %><sup>%</sup></strong> Feedback received that supports our overall plan</p>
+<p><strong><% if $TotalSubmissions %>$TotalSubmissions<% else %>0<% end_if %></strong> Number of times people have told us what they think</p>
+<p><strong><sup>#</sup>1</strong><% if MostPopularIdea %><% with MostPopularIdea %><a href="$Link">$Title</a> is the idea that we have received most feedback about<% end_with %><% else %>What will be the idea that we receive most feedback about?<% end_if %></p>
+<p><strong>$TotalNumberOfIdeas</strong> Number of ideas in our draft 10-year plan</p>
