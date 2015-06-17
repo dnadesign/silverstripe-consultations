@@ -1,0 +1,6 @@
+---
+name: consultations
+---
+TypeformSubmission:
+  extensions:
+    - TypeformSubmissionExtension
