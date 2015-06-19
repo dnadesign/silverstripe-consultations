@@ -25,8 +25,7 @@ opinionated and an early release.**
 ## Functionality
 
 This module provides the models for `Consultation`. Each consultation can be
-attached to an engagement form (at the moment hard coded to Typeform). These
-submissions can be displayed and graphed (work in progress).
+attached to an engagement form. These submissions can be displayed and graphed.
 
-Currently all forms use Typeform and data is synced across, long term we want to
-support multiple options (user forms, typeform or custom).
+Forms are built using the SilverStripe UserForm module.
+

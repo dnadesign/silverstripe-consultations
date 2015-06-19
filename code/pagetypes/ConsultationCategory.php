@@ -10,7 +10,6 @@ class ConsultationCategory extends Page {
 	private static $description = "Optional category for grouping consultations";
 
 	private static $db = array(
-		'SVGIcon' => 'Text',
 		'Tagline' => 'HTMLText'
 	);
 
@@ -30,7 +29,7 @@ class ConsultationCategory extends Page {
 
 	public function getSubmissions() {
 		if($list = $this->AllChildren()->column('ID')) {
-			return TypeformSubmission::get()->filter(array(
+			return SubmittedForm::get()->filter(array(
 				'ParentID' => $list
 			));
 		}
@@ -53,7 +52,10 @@ class ConsultationCategory extends Page {
 
 	public function getEngagementPercent() {
 		$comments = $this->getSubmissions()->Count();
-		$allComments = TypeformSubmission::get()->Count();
+
+		$allComments = SubmittedForm::get()->filter(array(
+			'IsConsultationSubmission' => 1
+		))->Count();
 		
 		if($allComments <= 0) {
 			return 0;

@@ -3,7 +3,7 @@
 /**
  * @package consultation
  */
-class Consultation extends Page {
+class Consultation extends UserDefinedForm {
 
 	private static $db = array(
 		'SVGIcon' => 'Text',
@@ -52,20 +52,24 @@ class Consultation extends Page {
 	}
 
 	public function getEngagementPercent() {
-		$comments = $this->getSubmissions()->Count();
-		$allComments = TypeformSubmission::get()->Count();
+		$comments = $this->Submissions()->Count();
+		$allComments = SubmittedForm::get()->filter('IsConsultationSubmission', true)->count();
 
 		if($allComments == 0) {
 			return 0;
 		}
 		
-		return ($comments/$allComments) * 100;
+		return ($comments / $allComments) * 100;
+	}
+
+	public function AllConsultations() {
+		return Consultation::get();
 	}
 
 	public function Ranking() {
 		$ideas = DB::query("
 			SELECT ID, 
-			(SELECT COUNT(*) FROM TypeformSubmission WHERE ParentID = Consultation_Live.ID) AS Count
+			(SELECT COUNT(*) FROM SubmittedForm WHERE ParentID = Consultation_Live.ID) AS Count
 			FROM Consultation_Live
 			ORDER BY Count DESC"
 		)->map();
@@ -91,7 +95,7 @@ class Consultation extends Page {
 	}
 
 	public function HighPriorityPercentage() {
-		$comments = $this->getSubmissions();
+		$comments = $this->Submissions();
 
 		if($comments->Count() < 1) {
 			return 0;
@@ -103,35 +107,19 @@ class Consultation extends Page {
 	}
 
 	public function TotalSubmissions() {
-		return number_format($this->getSubmissions()->Count(), 0);
+		return number_format($this->Submissions()->Count(), 0);
 	}
 
 	public function SupportPercentage() {
-		$comments = $this->getSubmissions();
+		$comments = $this->Submissions();
 
 		if($comments->Count() < 1) {
 			return 0;
 		}
 
-		$positive = $this->getSubmissions()->filter('SupportsOverallPlan', true);
+		$positive = $this->Submissions()->filter('SupportsIdea', true);
 
 		return round(($positive->Count() / $comments->Count()) * 100);
-	}
-
-	public function SupportsIdeaPercentage() {
-		$comments = $this->getSubmissions();
-
-		if($comments->Count() < 1) {
-			return 0;
-		}
-
-		$positive = $this->getSubmissions()->filter('SupportsIdea', true);
-
-		return round(($positive->Count() / $comments->Count()) * 100);
-	}
-
-	public function getSubmissions() {
-		return TypeformSubmission::get()->filter('ParentID', $this->ID);
 	}
 }
 
@@ -139,31 +127,9 @@ class Consultation extends Page {
  * @package consultation
  */
 
-class Consultation_Controller extends Page_Controller {
+class Consultation_Controller extends UserDefinedForm_Controller {
 
-	private static $allowed_actions = array(
-		'index',
-		'completed'
-	);
 
-	/**
-	 * When the big idea is completed, reload and fetch the results in the background.
-	 */
-	public function completed() {
-		if($key = $this->getTypeformUid()) {
-			// sync latest comments to the page
-			$sync = new SyncTypeformSubmissions_Single($key);
-			$sync->syncComments($this->getRecord(), true, $this->getSubmissions()->Count());
-
-			// update page rankings
-			$update = new UpdateRankings();
-			$update->run($this->request);
-		}
-
-		$resultsSummary = ResultSummaryPage::get()->first();
-
-		return $this->redirect($resultsSummary->Link('summary/'. $this->URLSegment .'/'));
-	}
 }
 
 /**
@@ -180,7 +146,6 @@ class Consultation_Fact extends DataObject {
 	private static $db = array(
 		'Figure' => 'Varchar',
 		'Content' => 'Varchar',
-		'Wide' => 'Boolean',
 		'Sort' => 'Int'
 	);
 

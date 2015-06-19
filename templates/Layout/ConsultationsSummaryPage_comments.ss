@@ -19,27 +19,6 @@
 
 <div class="search_content">
 	<div class="wrapper">
-		<div class="col_right col_right__wide col__tightbottom">
-			<div class="search_view_options">
-				<ul>
-					<li class="search_view_options_view active first">
-						<a href="$Link(comments)" class="list_icon"><span class="search_view_options_text">List</span></a>
-					</li>
-					
-					<li class="search_view_options_view last">
-						<a href="$Link(map)" class="map_icon"><span class="search_view_options_text">Map</span></a>
-					</li>
-				</ul>
-			</div>
-			
-			<!-- facetting form -->
-			<div class="search_facet_form search_facet_form__accommodation">
-				<h3 class="search_facet_form_title">Refine by:</h3>
-		
-				$FacetSearchForm
-			</div>
-		</div>
-
 		<div class="col_left col_left__wide">
 			<div class="search_sort">
 				<ul class="search_sort_filters">

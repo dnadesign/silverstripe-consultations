@@ -1,6 +1,6 @@
 ---
 name: consultations
 ---
-TypeformSubmission:
+SubmittedForm:
   extensions:
-    - TypeformSubmissionExtension
+    - SubmittedFormConsultation
