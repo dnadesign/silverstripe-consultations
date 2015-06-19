@@ -7,7 +7,7 @@ class EngagementReport extends SS_Report {
 	}
 	
 	public function sourceRecords($params, $sort, $limit) {
-		$returnSet = BigIdeaPage::get();
+		$returnSet = Consultation::get();
 		$result = array();
 
 		foreach($returnSet as $page) {

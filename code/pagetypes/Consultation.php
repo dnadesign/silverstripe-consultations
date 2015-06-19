@@ -26,7 +26,7 @@ class Consultation extends Page {
 		$fields->addFieldToTab('Root.Main', new UploadField('CategoryImage', 'Category Image'));
 
 		$config = GridFieldConfig_RelationEditor::create();
-		$config->addComponent(new GridFieldSortableRows('Sort'));
+		$config->addComponent(new GridFieldOrderableRows('Sort'));
 
 		$grid = new GridField('Facts', 'Facts', $this->Facts()->sort('Sort', 'ASC'), $config);
 
@@ -65,7 +65,7 @@ class Consultation extends Page {
 	public function Ranking() {
 		$ideas = DB::query("
 			SELECT ID, 
-			(SELECT COUNT(*) FROM TypeformSubmission WHERE ParentID = BigIdeaPage_Live.ID) AS Count
+			(SELECT COUNT(*) FROM TypeformSubmission WHERE ParentID = Consultation_Live.ID) AS Count
 			FROM Consultation_Live
 			ORDER BY Count DESC"
 		)->map();

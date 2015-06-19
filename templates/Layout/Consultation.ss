@@ -1,5 +1,3 @@
-<% include Header %>
-
 <div class="banner_intro">
 	<div class="wrapper">
 		<div class="banner_breadcrumbs">
@@ -17,10 +15,8 @@
 		<% if Introduction %><p class="intro">$Introduction</p><% end_if %>
 
 		<div class="stat_up stat_up__single">
-			<p><strong><sup>#</sup>{$Ranking}</strong> Most talked about idea (out of <a href="$BigIdeasPage.Link">$TotalNumberOfIdeas ideas</a>)</p>
+			<p><strong><sup>#</sup>{$Ranking}</strong> Most talked about idea (out of <a href="$Parent.Link">$TotalNumberOfIdeas</a>)</p>
 		</div>
-
-		<% include ShareThis %>
 	</div>
 </div>
 

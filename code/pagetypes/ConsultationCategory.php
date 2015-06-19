@@ -1,11 +1,13 @@
 <?php
 
 /**
- * @package consultation
+ * @package consultations
  */
 class ConsultationCategory extends Page {
 	
 	private static $default_child = 'Consultation';
+
+	private static $description = "Optional category for grouping consultations";
 
 	private static $db = array(
 		'SVGIcon' => 'Text',

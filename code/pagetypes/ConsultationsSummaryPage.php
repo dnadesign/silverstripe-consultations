@@ -1,20 +1,13 @@
 <?php
 
 /**
- * @package wcc_longtermplan
+ * @package consultations
  */
-class ResultSummaryPage extends Page {
+class ConsultationsSummaryPage extends Page {
 
-	private static $db = array(
-		'InTheFuture' => 'Boolean'
-	);
+	private static $db = array();
 
-	public function getCMSFields() {
-		$fields = parent::getCMSFields();
-		$fields->addFieldToTab('Root.Main', new CheckboxField('InTheFuture'));
-
-		return $fields;
-	}
+	private static $description = "Displays summary information for consultations";
 
 	public function Link($action = null, $clearSentiment = false) {
 		$param = null;
@@ -63,12 +56,12 @@ class ResultSummaryPage extends Page {
 /**
  * @package wcc_longtermplan
  */
-class ResultSummaryPage_Controller extends Page_Controller {
+class ConsultationsSummaryPage_Controller extends Page_Controller {
 	
-	private $idea;
+	private $consultation;
 
 	private static $allowed_actions = array(
-		'IdeaSelectorForm',
+		'ConsultationSelectorForm',
 		'FacetSearchForm',
 		'summary',
 		'comments',
@@ -99,15 +92,7 @@ class ResultSummaryPage_Controller extends Page_Controller {
 					$results = $fetch->syncComments($page);
 				}
 
-				Config::inst()->update('RebuildStaticCacheTask', 'quiet', true);
-				$rebuild = new RebuildStaticCacheTask();
-				$rebuild->rebuildCache($page->pagesAffectedByChanges(), false);
-
-				if($page->ClassName == "InTheFuturePage") {
-					return $this->redirect($page->AbsoluteLink('comments'));
-				} else {
-					return $this->redirect(Controller::join_links($this->Link(), '?IdeaID='. $id));
-				}
+				return $this->redirect(Controller::join_links($this->Link(), '?ConsultationID='. $id));
 			}
 		}
 
@@ -121,7 +106,7 @@ class ResultSummaryPage_Controller extends Page_Controller {
 		$feed = new RSSFeed(
     		$this->getFilteredSubmissions()->sort("Created", "DESC")->limit(20),
     		$this->Link('rss'),
-    		'Latest Submissions',
+		'Latest Comments',
     		null,
     		null,
     		null,
@@ -301,29 +286,21 @@ class ResultSummaryPage_Controller extends Page_Controller {
 	public function FacetSearchForm() {
 		$all = $this->getSubmissions()->Count();
 
-		if($idea = $this->getIdea()) {
+		if($consultation = $this->getConsultation()) {
 			$suburbCounts = DB::query("
-				SELECT Suburb, COUNT(*) FROM TypeformSubmission WHERE ParentID = ". $idea->ID ." GROUP BY Suburb"
+				SELECT Suburb, COUNT(*) FROM TypeformSubmission WHERE ParentID = ". $consultation->ID ." GROUP BY Suburb"
 			)->map();
 
 			$sentimentCounts = DB::query("
-				SELECT Sentiment, COUNT(*) FROM TypeformSubmission WHERE ParentID = ". $idea->ID ." GROUP BY Sentiment"
-			)->map();
-		} else if($this->ClassName == "InTheFuturePage") {
-			$suburbCounts = DB::query("
-				SELECT Suburb, COUNT(*) FROM TypeformSubmission WHERE InTheFuture = 1 GROUP BY Suburb"
-			)->map();
-
-			$sentimentCounts = DB::query("
-				SELECT Sentiment, COUNT(*) FROM TypeformSubmission WHERE InTheFuture = 1 GROUP BY Sentiment"
+				SELECT Sentiment, COUNT(*) FROM TypeformSubmission WHERE ParentID = ". $consultation->ID ." GROUP BY Sentiment"
 			)->map();
 		} else {
 			$suburbCounts = DB::query("
-				SELECT Suburb, COUNT(*) FROM TypeformSubmission WHERE InTheFuture = 0 GROUP BY Suburb"
+				SELECT Suburb, COUNT(*) FROM TypeformSubmission GROUP BY Suburb"
 			)->map();
 
 			$sentimentCounts = DB::query("
-				SELECT Sentiment, COUNT(*) FROM TypeformSubmission WHERE InTheFuture = 0 GROUP BY Sentiment"
+				SELECT Sentiment, COUNT(*) FROM TypeformSubmission GROUP BY Sentiment"
 			)->map();
 		}
 
@@ -353,7 +330,7 @@ class ResultSummaryPage_Controller extends Page_Controller {
 		$fields = new FieldList(
 			new HiddenField('Sort', '', $this->getCurrentSort()),
 			new HiddenField('Action', '', $this->getAction()),
-			new HiddenField('IdeaID', '', ($idea = $this->getIdea()) ? $idea->ID : null),
+			new HiddenField('ConsultationID', '', ($idea = $this->getConsultation()) ? $idea->ID : null),
 			$sentiment = new FieldGroup(
 				HeaderField::create('SentimentHeading', 'Sentiment', 6),
 				new CheckboxSetField('Sentiment', '', $parsedSentiments, $this->request->getVar('Sentiment'))
@@ -399,12 +376,12 @@ class ResultSummaryPage_Controller extends Page_Controller {
 		);
 	}
 
-	public function IdeaSelectorForm() {
-		$ideas = BigIdeaPage::get();
+	public function ConsultationSelectorForm() {
+		$ideas = Consultation::get();
 		$ids = array();
 
 		foreach($ideas as $idea) {
-			if($idea->ClassName == "BigIdeaCategoryPage") {
+			if($idea->ClassName == "ConsultationCategory") {
 				if($idea->Children()->Count() == 0) {
 					$ids[$idea->ID] = $idea->Title;
 				}
@@ -414,17 +391,17 @@ class ResultSummaryPage_Controller extends Page_Controller {
 		}
 
 		$fields = new FieldList(
-			$list = DropdownField::create('IdeaID', 'Show feedback on', $ids),
+			$list = DropdownField::create('ConsultationID', 'Show feedback on', $ids),
 			new HiddenField('Action', '', $this->request->param('Action'))
 		);
 
-		$list->setEmptyString('All Ideas');
+		$list->setEmptyString('All Consultations');
 
 		$actions = new FieldList(
-			new FormAction('doIdeaSelectorForm', 'Go')
+			new FormAction('doConsultationSelectorForm', 'Go')
 		);
 
-		$form = new Form($this, 'IdeaSelectorForm', $fields, $actions);
+		$form = new Form($this, __FUNCTION__, $fields, $actions);
 		$form->loadDataFrom($_GET);
 		$form->disableSecurityToken();
 
@@ -435,43 +412,48 @@ class ResultSummaryPage_Controller extends Page_Controller {
 	 * @param array $data
 	 * @param Form $form
 	 */
-	public function doIdeaSelectorForm($data, $form) {
-		$id = (isset($data['IdeaID'])) ? (int) $data['IdeaID'] : false;
+	public function doConsultationSelectorForm($data, $form) {
+		$id = (isset($data['ConsultationID'])) ? (int) $data['ConsultationID'] : false;
 
 		if(isset($data['Action'])) {
 			if($data['Action'] == "comments") {
-				return $this->redirect($this->Link('comments/?IdeaID='. $id));
+				return $this->redirect($this->Link('comments/?ConsultationID='. $id));
 			} else if($data['Action'] == "map") {
-				return $this->redirect($this->Link('map/?IdeaID='. $id));
+				return $this->redirect($this->Link('map/?ConsultationID='. $id));
 			}
 			
-			return $this->redirect($this->Link('?IdeaID='. $id));
+			return $this->redirect($this->Link('?ConsultationID='. $id));
 		}
 
 		return $this->redirect($this->Link());
 	}
 
-
-	public function getIdea() {
-		if(!$this->idea) {
-			$id = $this->request->getVar('IdeaID');
+	/**
+	 * @return Consultation
+	 */
+	public function getConsultation() {
+		if(!$this->consultation) {
+			$id = $this->request->getVar('ConsultationID');
 
 			if($id) {
-				$this->idea = BigIdeaPage::get()->byId($id);
+				$this->consultation = Consultation::get()->byId($id);
 			}
 		}
 
-		return $this->idea;
+		return $this->consultation;
 	}
 
+	/**
+	 * @return DataList
+	 */
 	public function getSubmissions() {
-		$idea = $this->getIdea();
+		$idea = $this->getConsultation();
 
 		if($idea) {
 			$submissions = $idea->getSubmissions();
 		} else {
 			// in the future
-			$submissions = TypeformSubmission::get()->exclude('InTheFuture', 1);
+			$submissions = TypeformSubmission::get();
 		}
 
 		return $submissions;

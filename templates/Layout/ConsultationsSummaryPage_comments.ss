@@ -1,21 +1,17 @@
-<% include Header %>
-
 <div class="banner_intro">
 	<div class="wrapper">
 		<h1>$Title</h1>
 
 		<p class="intro">$Introduction</p>
 
-		$IdeaSelectorForm
-
-		<% include ShareThis %>
+		$ConsultationSelectorForm
 	</div>
 </div>
 
-<% if Idea && Idea.Tagline %>
+<% if Consultation && Consultation.Tagline %>
 	<div class="wrapper">
 		<div class="feature_text feature_tagline">
-			$Idea.Tagline
+			$Consultation.Tagline
 		</div>
 	</div>
 <% end_if %>
