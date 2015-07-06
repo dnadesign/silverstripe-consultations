@@ -7,10 +7,16 @@ class ConsultationsLandingPage extends Page {
 	
 	private static $default_child = 'ConsultationCategory';
 
+	private static $description = "Holder for consultations and consultation categories";
+
 	public function getCategories() {
-		return $this->Children()->filterByCallback(function ($page) {
-			return (is_a($page, 'ConsultationCategory') || is_subclass_of($page, 'ConsultationCategory'));
-		});
+		$categories = ClassInfo::subclassesFor('ConsultationCategory');
+		return $this->Children()->filter('Classname', $categories);
+	}
+
+	public function getConsultations() {
+		$consultations = ClassInfo::subclassesFor('Consultation');
+		return $this->Children()->filter('Classname', $consultations);
 	}
 
 }
@@ -18,6 +24,4 @@ class ConsultationsLandingPage extends Page {
 /**
  * @package consultation
  */
-class ConsultationsLandingPage_Controller extends Page_Controller {
-
-}
+class ConsultationsLandingPage_Controller extends Page_Controller {}
