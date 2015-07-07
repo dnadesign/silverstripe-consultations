@@ -1,2 +1,7 @@
 /* Fix for Simple Theme */
 .consultation-form .Actions input.action { float: none; }
+
+/* Status */
+.consultation-form__active { display: block; opacity: 1; }
+.consultation-form__pending { display: block; opacity: .5; }
+.consultation-form__expired { display: none; opacity: 0; }

@@ -198,6 +198,10 @@ class Consultation extends UserDefinedForm {
 
 class Consultation_Controller extends UserDefinedForm_Controller {
 
+	private static $allowed_actions = array(
+		'index'
+	);
+
 	public function init() {
 		parent::init(); 
 		Requirements::css(CONSULTATION_MODULE_DIR . '/css/consultations.css');
