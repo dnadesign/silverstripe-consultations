@@ -8,8 +8,12 @@ EditableFormField:
 
 SubmittedForm:
   extensions:
-    - ConsultationSubmission
+    - ConsultationSubmittedForm
 
 SubmittedFormField:
   extensions:
     - ConsultationSubmittedField
+
+UserDefinedForm_Controller:
+  extensions:
+    - ConsultationFormExtension

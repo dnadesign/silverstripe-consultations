@@ -1,4 +1,4 @@
-<div>
+<div class="consultation-comments">
 	<ul>
 		<li>$Created.Nice</li>
 		<% loop CommentFields %>

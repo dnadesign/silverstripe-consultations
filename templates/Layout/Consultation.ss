@@ -1,15 +1,11 @@
-<h1>$Title</h1>
+<h1>$Category.Title > $Title</h1>
+
+<h3>Rank: #$GlobalPopularity</h3>
+<% if PopularityInCategory %><h3>Rank in this category: #$PopularityInCategory</h3><% end_if %>
 
 $Content
 
-<div class="clearfix"></div>
-
-<% if Submissions %>
-<hr/>
-	<ul>
-		<% loop Submissions.Limit(10) %>
-			<li><% include ConsultationComment %></li>
-		<% end_loop %>
-	</ul>
-
-<% end_if %>
+<% loop Submissions %>
+	<hr/>
+	<% include ConsultationComment %>
+<% end_loop %>
