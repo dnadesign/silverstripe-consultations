@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @package consultation
+ */
 class ConsultationSubmittedForm extends DataExtension {
 
 	private static $db = array(

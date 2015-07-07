@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @package consultation
+ */
 class ConsultationSubmittedField extends DataExtension {
 
 	/**

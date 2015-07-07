@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @package consultation
+ */
 class ConsultationAdmin extends ModelAdmin {
 
     private static $managed_models = array(

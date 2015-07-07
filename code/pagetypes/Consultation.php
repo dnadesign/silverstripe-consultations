@@ -1,9 +1,13 @@
 <?php
-
 /**
  * @package consultation
  */
 class Consultation extends UserDefinedForm {
+
+	private static $db = array(
+		'Starts' => 'Date',
+		'Expires' => 'Date'
+	);
 
 	private static $summary_fields = array(
 		'ID' => 'ID',
@@ -11,8 +15,81 @@ class Consultation extends UserDefinedForm {
 		'getCategoryName' => 'Category',
 		'getparticipation' => 'Participation',
 		'getGlobalPopularityAsString' => 'Global Popularity',
-		'getPopularityInCatgeoryAsString' => 'Popularity in catgory'
+		'getPopularityInCatgeoryAsString' => 'Popularity in catgory',
+		'getStatus' => 'Status'
 	);
+
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
+
+		$embargo = ToggleCompositeField::create('Embargo', 'Embargo',array(
+			DateField::create('Starts', 'Allow participation from')
+			->setRightTitle('Optional. If left blank, participation starts when page is published')
+			->setConfig('showcalendar', true),
+			DateField::create('Expires', 'Until')
+			->setRightTitle('Optional. If left blank, participation will end when page is unpublished.')
+			->setConfig('showcalendar', true)
+		))->setStartClosed(false);
+
+		$fields->addFieldToTab('Root.FormOptions', $embargo, 'SubmitButtonText');
+		return $fields;
+	}
+
+	/**
+	* Return whether this onsultation is open for participation
+	*
+	* @return Boolean
+	*/
+	public function isOpen() {
+		return ($this->hasStarted() && !$this->hasExpired());
+	}
+
+	public function hasStarted() {
+		$now = strtotime('now');		
+
+		if ($this->Starts) {
+			$start = strtotime($this->Starts);
+			return ($now > $start);
+		}
+		return true;
+	}
+
+	public function hasExpired() {
+		$now = strtotime('now');		
+
+		if ($this->Expires) {
+			$end = strtotime($this->Expires);
+			return ($now > $end);
+		}
+		return false;
+	}
+
+	/**
+	* Return whether the participation is opened
+	* for gridfield summary
+	*
+	* @return HTMLText
+	*/
+	public function getStatus() {
+		$colours = array('red', 'green', 'blue');
+
+		$colour = (!$this->hasStarted()) ? $colours[2] : $colours[(int)$this->isOpen()];
+		$message = '';
+		// Not started yet
+		if (!$this->hasStarted()) {
+			$date = new DateTime($this->Starts);
+			$message = 'Starting on '.$date->format('d-m-Y');
+		} 
+		// Active / Epxpired
+		else  { 
+			$message = ($this->hasExpired()) ? 'Expired' : 'Active';
+		}
+
+		$output = sprintf('<span style="color:%s">%s</span>', $colour, $message);
+		$field = HTMLText::create('Status');
+		$field->setValue($output);
+		return $field;
+	} 
 
 	/**
 	* Return the parent category
