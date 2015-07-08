@@ -5,6 +5,10 @@
 
 $Content
 
+<% loop AllReports %>
+	$Me.render()
+<% end_loop %>
+
 <% loop Submissions %>
 	<hr/>
 	<% include ConsultationComment %>

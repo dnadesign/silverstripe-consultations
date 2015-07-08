@@ -12,7 +12,7 @@ class ConsultationFormExtension extends Extension {
 		} else if (!$this->owner->data()->hasStarted()) {
 			$form->addExtraClass('consultation-form__pending');
 			$this->owner->disable($form);
-		} else if ($this->owner->data()->hasSExpired()) {
+		} else if ($this->owner->data()->hasExpired()) {
 			$form->addExtraClass('consultation-form__expired');
 			$this->owner->disable($form);
 		}

@@ -30,6 +30,15 @@ class ConsultationCategory extends Page {
 		return new ArrayList();
 	}
 
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
+
+		// Remove content since this page redirects to first consultation
+		$fields->removeByName('Content');
+
+		return $fields;
+	}
+
 	// public function EngagementOffset($radius = 45) {
 	// 	$percent = $this->getEngagementPercent();
 	// 	$c = pi() * ($radius * 2);
@@ -62,21 +71,4 @@ class ConsultationCategory extends Page {
  * @package consultation
  */
 
-class ConsultationCategory_Controller extends Page_Controller {
-
-	/**
-	* Redirect to the first consultation in this category
-	* when linked directly
-	*/
-	public function init() {
-		parent::init();
-
-		if($this->AllChildren()->count() > 0) {
-			$child = $this->Children()->First();
-
-			if($child->ID !== $this->ID) {
-				return $this->redirect($child->Link());
-			}
-		}
-	}
- }
+class ConsultationCategory_Controller extends Page_Controller { }

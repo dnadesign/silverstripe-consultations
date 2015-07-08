@@ -9,6 +9,10 @@ class Consultation extends UserDefinedForm {
 		'Expires' => 'Date'
 	);
 
+	private static $has_many = array(
+		'Reports' => 'ConsultationReport'
+	);
+
 	private static $summary_fields = array(
 		'ID' => 'ID',
 		'Title' => 'Title',
@@ -22,6 +26,7 @@ class Consultation extends UserDefinedForm {
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 
+		// Embargo
 		$embargo = ToggleCompositeField::create('Embargo', 'Embargo',array(
 			DateField::create('Starts', 'Allow participation from')
 			->setRightTitle('Optional. If left blank, participation starts when page is published')
@@ -32,6 +37,13 @@ class Consultation extends UserDefinedForm {
 		))->setStartClosed(false);
 
 		$fields->addFieldToTab('Root.FormOptions', $embargo, 'SubmitButtonText');
+
+		// Reports
+		$config = GridFieldConfig_RecordEditor::create();
+		$reports = GridField::create('Reports', 'Reports', $this->Reports(), $config);
+
+		$fields->addFieldToTab('Root.Reports', $reports);
+
 		return $fields;
 	}
 
@@ -188,6 +200,11 @@ class Consultation extends UserDefinedForm {
 	*/
 	public function getParticipation() {
 		return $this->Submissions()->count();
+	}
+
+
+	public function getAllReports() {
+		return $this->Reports();
 	}
 
 }

@@ -5,7 +5,9 @@
 class ConsultationAdmin extends ModelAdmin {
 
     private static $managed_models = array(
-        'Consultation'
+        'Consultation',
+        'ConsultationCategory',
+        'ConsultationReportType'
     );
 
     private static $url_segment = 'consultations';
