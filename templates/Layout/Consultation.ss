@@ -5,8 +5,8 @@
 
 $Content
 
-<% loop AllReports %>
-	$Me.render()
+<% loop Reports %>
+	$Me.generate()
 <% end_loop %>
 
 <% loop Submissions %>

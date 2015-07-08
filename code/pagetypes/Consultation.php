@@ -202,9 +202,19 @@ class Consultation extends UserDefinedForm {
 		return $this->Submissions()->count();
 	}
 
+	/**
+	* Get the consultation with the most submissions
+	*/
+	public static function getMostPopular() {
+		return self::get()->sort("(SELECT COUNT(ID) FROM SubmittedForm WHERE ParentID = UserDefinedForm.ID)")->reverse()->First();
+	}
 
-	public function getAllReports() {
-		return $this->Reports();
+	/**
+	* Get all submission for all consultation
+	*/
+	public static function getAllSubmissions() {
+		$consultations = self::get()->column('ID');
+		return SubmittedForm::get()->filter('ParentID', $consultations);
 	}
 
 }

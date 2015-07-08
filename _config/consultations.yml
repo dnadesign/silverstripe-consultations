@@ -17,3 +17,7 @@ SubmittedFormField:
 UserDefinedForm_Controller:
   extensions:
     - ConsultationFormExtension
+
+Consultation:
+  allowed_reports:
+    - DonutChartReport

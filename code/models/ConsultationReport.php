@@ -3,20 +3,20 @@
 class ConsultationReport extends DataObject {
 
 	private static $db = array(
-		'Title' => 'Varchar(255)'
+		'Title' => 'Varchar(255)',
+		'Type' => 'Varchar(255)'
 	);
 
 	private static $has_one = array(
 		'Field' => 'EditableFormField',
-		'Consultation' => 'Consultation',
-		'Type' => 'ConsultationReportType'
+		'Consultation' => 'Consultation'		
 	);
 
 	private static $summary_fields = array(
 		'Title' => 'Title',
 		'Consultation.Title' => 'Consultation',
 		'Field.Title' => 'Reports on',
-		'Type.Name' => 'Type'
+		'Type' => 'Type'
 	);
 
 	public function getCMSFields() {
@@ -34,8 +34,7 @@ class ConsultationReport extends DataObject {
 			$fields->push($dropdown_field);
 
 			// Report Types
-			$types = ConsultationReportType::get()->map('ID', "Name");
-			$dropdown_types = DropdownField::create('TypeID', 'Report Type', $types);
+			$dropdown_types = DropdownField::create('Type', 'Type', $this->getAllowedReportTypes());
 			$fields->push($dropdown_types);
 		}
 		else {
@@ -44,6 +43,19 @@ class ConsultationReport extends DataObject {
 		}
 
 		return $fields;
+	}
+
+	private function getAllowedReportTypes() {
+		$map = [];
+		$types = $this->Consultation()->Config()->get('allowed_reports');
+
+		foreach($types as $type) {
+			if (class_exists($type)) {
+				$map[$type] = singleton($type)->getName();
+			}
+			// $map[$type] = FormField::name_to_label($type);
+		}
+		return $map;
 	}
 
 	/**
@@ -72,15 +84,6 @@ class ConsultationReport extends DataObject {
 	}
 
 	/**
-	* Return results as a json string
-	*
-	* @return json
-	*/
-	public function dataAsJson() {
-		return json_encode($this->data());
-	}
-
-	/**
 	* Return results as an ArrayData for template processing
 	*
 	* @return ArrayData
@@ -94,19 +97,15 @@ class ConsultationReport extends DataObject {
 	/**
 	* Render HTML
 	*/
-	public function render() {
-		if (!$this->Type() || !$this->Type()->exists()) { return; }
-
-		$template = $this->Type()->TemplateName;
-		$controller = Controller::curr();
+	public function generate() {
+		if (!$this->Type || !class_exists($this->Type)) { return; }	
 
 		$data = $this->dataAsArraydata();
 		$data->setField('ReportTitle', $this->Title);
 		$data->setField('ReportID', $this->IDHash());
-		$data->setField('JsData', $this->Type()->jsData($this->data()));
 
-		$html = $controller->customise($data)->renderWith($template);
-		return $html; 
+		$reportType = singleton($this->Type);
+		return $reportType->render(Controller::curr(), $data);
 	}
 
 	/**

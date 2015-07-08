@@ -1,105 +1,40 @@
-<div class="banner_intro">
-	<div class="wrapper">
-		<h1>$Title</h1>
+<h1>$Title</h1>
 
-		<% if not Consultation %>
-			<p class="intro">$Introduction</p>
-		<% end_if %>
+$ConsultationSelectorForm
 
-		$ConsultationSelectorForm
-	</div>
-</div>
-
-<% if Consultation && Consultation.Tagline %>
-	<div class="wrapper">
-		<div class="feature_text feature_tagline">
-			$Consultation.Tagline
-		</div>
-	</div>
-<% end_if %>
-
-<% if LatestComments %>
-<div class="wrapper graphs">
-	<div class="wrapper_grey">
-		<div class="stat_up stat_up__four stat_up__dark stat_up__tight">
-			<% if Idea %>
-				<% with Idea %>
-					<% include Idea_Stats %>
-				<% end_with %>
-			<% else %>
-				<% include OverallStats %>
+<% with ConsultationSummary %>
+<div class="summary">
+	<table>
+		<thead>
+			<tr>
+				<td>Participation</td>
+				<td><% if isDetail %>Most Popular <% else %>Consultation<% end_if %></td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>$Participation</td>
+				<% if isDetail %>
+					<td><a href="$Consultation.Link()">$Consultation.Title</a></td>					
+				<% else %>
+					<td><a href="$ConsultationSummaryLink">$Consultation.Title</a></td>
+				<% end_if %> 
+			</tr>
+			<% if Consultation.Reports %>
+			<tr>
+				<td colspan="2">
+				<% loop Consultation.Reports %>
+						$Me.generate()
+					<% end_loop %>
+				</td>
+			</tr>
 			<% end_if %>
-		</div>
-
-		<% if Idea %>
-			<div class="summary_graphs halves summary_graphs__dark">
-				<div class="halve_left">
-					<% include Graph_Benefit %>
-				</div>
-
-				<div class="halve_right">
-					<% include Graph_Priority %>
-				</div>
-			</div>
-		<% else %>
-			<div class="summary_graphs summary_graphs__dark">
-				<div class="summary_graph_single">
-					<% include Graph_Benefit %>
-				</div>
-			</div>
-		<% end_if %>
-	</div>
+		</tboby> 
+	</table>
 </div>
-<% else %>
-	<div class="search_content single_comment">
-		<div class="wrapper">
-			<div class="col_left col_left__wide">
-				<ul class="search_results">
-					<li class="search_result">
-						<div class="search_result_inner">
-							<h3>No feedback received on this idea yet.</h3> 
-						</div>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-<% end_if %>
+<% end_with %>
 
-<div class="wrapper">
-	<% if LatestPromotedComments %>
-	<div class="comments_grid__container">
-		<div class="comments_grid comments_grid__left">
-			<ul>
-				<% loop LatestPromotedComments %>	
-					<% if Odd %>
-						<li><% include Comment %></li>
-					<% end_if %>
-				<% end_loop %>
-			</ul>
-		</div>
-
-		<div class="comments_grid comments_grid__right">
-			<ul>
-				<% loop LatestPromotedComments %>	
-					<% if Even %>
-						<li><% include Comment %></li>
-					<% end_if %>
-				<% end_loop %>
-			</ul>
-		</div>
-	</div>
-	<% end_if %>
-
-	<% if LatestComments %>
-	<div class="halves">
-		<div class="halve_left">
-			<p class="button_right"><a href="$Link(comments)" class="button button__dark button__small">See all comments</a></p>
-		</div>
-
-		<div class="halve_right">
-			<p class="button_left"><a href="$Link(map)" class="button  button__yellow button__small">View feedback on a map</a></p>
-		</div>
-	</div>
-	<% end_if %>
-</div>
+<% loop Comments %>
+	<hr/>
+	<% include ConsultationComment %>
+<% end_loop %>

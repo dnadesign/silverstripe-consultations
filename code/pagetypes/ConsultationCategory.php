@@ -8,6 +8,15 @@ class ConsultationCategory extends Page {
 
 	private static $description = "Optional category for grouping consultations";
 
+	public function getCMSFields() {
+		$fields = parent::getCMSFields();
+
+		// Remove content since this page redirects to first consultation
+		$fields->removeByName('Content');
+
+		return $fields;
+	}
+
 	/**
 	* Return all consultation in this category
 	*
@@ -30,41 +39,6 @@ class ConsultationCategory extends Page {
 		return new ArrayList();
 	}
 
-	public function getCMSFields() {
-		$fields = parent::getCMSFields();
-
-		// Remove content since this page redirects to first consultation
-		$fields->removeByName('Content');
-
-		return $fields;
-	}
-
-	// public function EngagementOffset($radius = 45) {
-	// 	$percent = $this->getEngagementPercent();
-	// 	$c = pi() * ($radius * 2);
-
-	// 	$result = ((100 - $percent) / 100)* $c;
-	// 	$rotate = -90;
-
-	// 	return new ArrayData(array(
-	// 		'Offset' => $result,
-	// 		'Rotate' => $rotate . 'deg'
-	// 	));
-	// }
-
-	// public function getEngagementPercent() {
-	// 	$comments = $this->getSubmissions()->Count();
-
-	// 	$allComments = SubmittedForm::get()->filter(array(
-	// 		'IsConsultationSubmission' => 1
-	// 	))->Count();
-		
-	// 	if($allComments <= 0) {
-	// 		return 0;
-	// 	}
-		
-	// 	return ($comments/$allComments) * 100;
-	// }
 }
 
 /**
