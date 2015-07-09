@@ -41,7 +41,9 @@ To create a report, on a `Consultation` page , head to the `Report` tab, create 
 
 ### Report Types
 Out-of -the-box, you can display report as a doughnut chart (powered by [Chart.js](http://www.chartjs.org/ "Chart.js")
-You can create new report type by extending `ConsultationReportType` and implementing the 	  ``function render($controller, $data) {} `` to feed your new report report template.
+You can create new report type by extending `ConsultationReportType` and implementing:
+	``function render($controller, $data) {} `` 
+
 
 ## Comments
 Comments can include any field from the consultation form. To include a field in a comment, simply tick the option `include in comment` when creating the field.
