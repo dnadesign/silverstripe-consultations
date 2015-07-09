@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "266a337d7b6505e7915ceda838087cd1",
+    "hash": "d497cb108d05cef20c051da0a0e95712",
     "packages": [
         {
             "name": "composer/installers",
@@ -290,50 +290,12 @@
                 "userforms"
             ],
             "time": "2015-06-13 02:17:57"
-        },
-        {
-            "name": "tractorcow/silverstripe-colorpicker",
-            "version": "3.0.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/tractorcow/silverstripe-colorpicker.git",
-                "reference": "2d1a1afc580b84dc47a8e708c09a3c7588385174"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/tractorcow/silverstripe-colorpicker/zipball/2d1a1afc580b84dc47a8e708c09a3c7588385174",
-                "reference": "2d1a1afc580b84dc47a8e708c09a3c7588385174",
-                "shasum": ""
-            },
-            "require": {
-                "silverstripe/framework": "3.*"
-            },
-            "type": "silverstripe-module",
-            "extra": {
-                "installer-name": "colorpicker"
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "authors": [
-                {
-                    "name": "Damian Mooyman",
-                    "email": "damian.mooyman@gmail.com"
-                }
-            ],
-            "description": "Color picker field for Silverstripe CMS using the ColorPicker jQuery plugin",
-            "keywords": [
-                "color",
-                "colour",
-                "silverstripe"
-            ],
-            "time": "2015-01-27 20:44:50"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "tractorcow/silverstripe-colorpicker": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

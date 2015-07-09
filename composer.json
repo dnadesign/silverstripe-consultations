@@ -11,8 +11,7 @@
     "require": {
         "silverstripe/framework": "~3.1",
         "silverstripe-australia/gridfieldextensions": "*",
-        "silverstripe/userforms": "2.0.10",
-        "tractorcow/silverstripe-colorpicker": "3.0.*@dev"
+        "silverstripe/userforms": "2.0.10"
     },
     "extra": {
         "installer-name": "consultations"
