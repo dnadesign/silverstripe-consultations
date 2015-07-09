@@ -4,11 +4,13 @@ class DonutChartReport extends ConsultationReportType {
 
 	protected $name = 'Donut Chart';
 	protected $template = 'DonutChartreport';
+	protected $requiresColours = true;
 
 	public function render(Controller $controller, ArrayData $data) {
 		// Require js library
 		Requirements::javascript(CONSULTATION_MODULE_DIR . '/js/chart.js');
 		Requirements::javascript(CONSULTATION_MODULE_DIR . '/js/doughnut.init.js');
+		Requirements::css(CONSULTATION_MODULE_DIR . '/css/doughnut_report.css');
 		// Customise data
 		$data->setField('jsData', $this->jsData($data));
 		// Perform rendering
@@ -16,12 +18,12 @@ class DonutChartReport extends ConsultationReportType {
 	}
 
 	public function jsData($data) {
-		$entries = $data->getField('Options')->toArray();
+		$options = $data->getField('Options')->toArray();
 		$json = [];
-		foreach($entries as $entry) {
+		foreach($options as $option) {
 			$json[] = array (
-				'value' => $entry['Value'],
-				'label' => $entry['Label'],
+				'value' => $option['Value'],
+				'label' => $option['Label'],
 				'color' => $this->rand_color(),
 				'highlight' => $this->rand_color()
 			);

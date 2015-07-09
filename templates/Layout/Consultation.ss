@@ -1,15 +1,22 @@
-<h1>$Category.Title > $Title</h1>
+<h1>$Breadcrumbs</h1>
 
-<h3>Rank: #$GlobalPopularity</h3>
-<% if PopularityInCategory %><h3>Rank in this category: #$PopularityInCategory</h3><% end_if %>
+<section class="consultation-ranking">
+	<h3>Rank: #$GlobalPopularity</h3>
+	<% if PopularityInCategory %><h3>Rank in this category: #$PopularityInCategory</h3><% end_if %>
+</section>
 
-$Content
+<section class="consultation-content">
+	$Content
+</section>
 
-<% loop Reports %>
-	$Me.generate()
-<% end_loop %>
+<section class="consultation-reports">
+	<% loop Reports %>
+		$Me.generate()
+	<% end_loop %>
+</section>
 
-<% loop Submissions %>
-	<hr/>
-	<% include ConsultationComment %>
-<% end_loop %>
+<section class="consultation-comments">
+	<% loop Submissions %>
+		<% include ConsultationComment %>
+	<% end_loop %>
+</section>

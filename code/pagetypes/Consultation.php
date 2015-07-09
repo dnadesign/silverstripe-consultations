@@ -132,22 +132,19 @@ class Consultation extends UserDefinedForm {
 
 	/**
 	* Return the position of this consultation
-	* compared with the amount of submission all other consultations have
+	* based on the amount of submission
 	*
 	* @return Int
 	*/
 	public function getGlobalPopularity() {
-		$consultations = self::get()
-			->sort("(SELECT COUNT(ID) FROM SubmittedForm WHERE ParentID = UserDefinedForm.ID)")
-			->reverse();
-
+		$consultations = self::getOrderedByPopulartity();	
 		$rank = (int) array_search($this->ID, $consultations->column('ID')) + 1;
 		return $rank; 
 	}
 
 	/**
 	* Return the position of this consultation
-	* compared with the amount of submission all other consultations have
+	* based on the amount of submission
 	* in a position / number consultation string format
 	*
 	* @return String
@@ -159,7 +156,7 @@ class Consultation extends UserDefinedForm {
 
 	/**
 	* Return the position of this consultation
-	* compared with the amount of submission all other consultations have
+	* based on the amount of submission
 	* within the same category
 	*
 	* @return Int
@@ -168,10 +165,8 @@ class Consultation extends UserDefinedForm {
 		$category = $this->getCategory();
 		if (!$category) { return; }
 
-		$consultations = self::get() 
-			->filter('ParentID', $category->ID)
-			->sort("(SELECT COUNT(ID) FROM SubmittedForm WHERE ParentID = UserDefinedForm.ID)")
-			->reverse();
+		$consultations = self::getOrderedByPopulartity();		
+		$consultations = $consultations->filter('ParentID', $category->ID);
 
 		$rank = (int) array_search($this->ID, $consultations->column('ID')) + 1;
 		return $rank; 
@@ -179,7 +174,7 @@ class Consultation extends UserDefinedForm {
 
 	/**
 	* Return the position of this consultation
-	* compared with the amount of submission all other consultations have
+	* based on the amount of submission
 	* within the same category
 	* in a position / number consultation string format
 	*
@@ -206,7 +201,8 @@ class Consultation extends UserDefinedForm {
 	* Get the consultation with the most submissions
 	*/
 	public static function getMostPopular() {
-		return self::get()->sort("(SELECT COUNT(ID) FROM SubmittedForm WHERE ParentID = UserDefinedForm.ID)")->reverse()->First();
+		$popularity = self::getOrderedByPopulartity();		
+		return $popularity->First();
 	}
 
 	/**
@@ -216,6 +212,21 @@ class Consultation extends UserDefinedForm {
 		$consultations = self::get()->column('ID');
 		return SubmittedForm::get()->filter('ParentID', $consultations);
 	}
+
+	/**
+	* Return all consultation ordered by popularity
+	* based on the number of submissions
+	*
+	* @return DataList
+	*/
+	public static function getOrderedByPopulartity() {
+		$table = 'UserDefinedForm';
+		if (Versioned::current_stage() == 'Live') {
+			$table .= '_Live';
+		}
+		return self::get()->sort("(SELECT COUNT(ID) FROM SubmittedForm WHERE ParentID = " . $table . ".ID)")->reverse();
+	}
+
 
 }
 

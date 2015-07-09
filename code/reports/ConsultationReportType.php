@@ -4,7 +4,7 @@ abstract class ConsultationReportType {
 
 	protected $name;
 	protected $template;
-	protected $extraConfig;
+	protected $requiresColours = false;
 
 	abstract public function render(Controller $controller, ArrayData $data);
 
@@ -16,7 +16,8 @@ abstract class ConsultationReportType {
 		return $this->template;
 	}
 
-	public function getExtraConfig() {
-		return $this->extraConfig;
+	public function requiresColours() {
+		return $this->requiresColours;
 	}
+
 }

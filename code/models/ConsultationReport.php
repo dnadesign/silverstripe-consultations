@@ -15,8 +15,7 @@ class ConsultationReport extends DataObject {
 	private static $summary_fields = array(
 		'Title' => 'Title',
 		'Consultation.Title' => 'Consultation',
-		'Field.Title' => 'Reports on',
-		'Type' => 'Type'
+		'Field.Title' => 'Reports on'
 	);
 
 	public function getCMSFields() {
@@ -36,6 +35,8 @@ class ConsultationReport extends DataObject {
 			// Report Types
 			$dropdown_types = DropdownField::create('Type', 'Type', $this->getAllowedReportTypes());
 			$fields->push($dropdown_types);
+
+			$fields->push(ColorField::create('Colour', 'Colour'));
 		}
 		else {
 			$warning = LiteralField::create('Warning', 'Please save this component to edit it.');
