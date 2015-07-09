@@ -43,7 +43,7 @@ To create a report, on a `Consultation` page , head to the `Report` tab, create 
 Out-of -the-box, you can display report as a doughnut chart (powered by [Chart.js](http://www.chartjs.org/ "Chart.js")
 You can create new report type by extending `ConsultationReportType` and implementing:
 
-	``function render($controller, $data) {} `` 
+	function render($controller, $data) {}
 
 
 ## Comments
