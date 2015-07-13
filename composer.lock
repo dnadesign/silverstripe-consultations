@@ -4,8 +4,47 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "7f52b43d6b00ac5adad55bc691eccb74",
+    "hash": "593073598342c18c4347bae0c9b03574",
     "packages": [
+        {
+            "name": "colymba/silverstripe-colorfield",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/colymba/silverstripe-colorfield.git",
+                "reference": "ab241b67c237d138ab3c5aca85294aae69f6b9e3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/colymba/silverstripe-colorfield/zipball/ab241b67c237d138ab3c5aca85294aae69f6b9e3",
+                "reference": "ab241b67c237d138ab3c5aca85294aae69f6b9e3",
+                "shasum": ""
+            },
+            "require": {
+                "silverstripe/framework": ">=3"
+            },
+            "type": "silverstripe-module",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD Simplified"
+            ],
+            "authors": [
+                {
+                    "name": "Thierry Francois",
+                    "email": "thierry@colymba.com"
+                }
+            ],
+            "description": "SilverStripe 3 Color picker and DBField field with attitude.",
+            "keywords": [
+                "color",
+                "color picker",
+                "colour",
+                "colour field",
+                "dbfield",
+                "silverstripe"
+            ],
+            "time": "2014-11-28 17:48:01"
+        },
         {
             "name": "composer/installers",
             "version": "v1.0.21",

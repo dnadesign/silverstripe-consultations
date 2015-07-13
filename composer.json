@@ -13,7 +13,8 @@
     "require": {
         "silverstripe/framework": "~3.1",
         "silverstripe-australia/gridfieldextensions": "*",
-        "silverstripe/userforms": "2.0.10"
+        "silverstripe/userforms": "2.0.10",
+        "colymba/silverstripe-colorfield": "*"
     },
     "extra": {
         "installer-name": "consultations"
