@@ -2,6 +2,8 @@
     "name": "dnadesign/silverstripe-consultations",
     "description": "Build consultation forms for community engagement.",
     "type": "silverstripe-module",
+    "minimum-stability": "dev",
+    "prefer-stable" : true,
     "keywords": ["silverstripe", "consultation", "engagement", "form"],
 	"license": "BSD-3-Clause",
     "authors": [{
