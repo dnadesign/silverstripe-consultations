@@ -2,6 +2,8 @@
     "name": "dnadesign/silverstripe-consultations",
     "description": "Build consultation forms for community engagement.",
     "type": "silverstripe-module",
+    "minimum-stability": "dev",
+    "prefer-stable" : true,
     "keywords": ["silverstripe", "consultation", "engagement", "form"],
 	"license": "BSD-3-Clause",
     "authors": [{
@@ -11,7 +13,8 @@
     "require": {
         "silverstripe/framework": "~3.1",
         "silverstripe-australia/gridfieldextensions": "*",
-        "silverstripe/userforms": "2.0.10"
+        "silverstripe/userforms": "2.0.10",
+        "colymba/silverstripe-colorfield": "*"
     },
     "extra": {
         "installer-name": "consultations"
