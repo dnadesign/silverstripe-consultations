@@ -74,7 +74,15 @@ class ConsultationReport extends DataObject {
 
 		$options = $this->Field()->Options();
 		foreach($options as $option) {
-			$result = SubmittedFormField::get()->filter(array('ParentID' => $this->Consultation()->Submissions()->column('ID'), 'Value' => $option->Title));
+			$parentID = $option->ParentID;
+			$result = SubmittedFormField::get()->filter(
+				array(
+					'ParentID' => $this->Consultation()->Submissions()->column('ID'),
+					// confirm the value actually belongs to the correct form field
+					'Name' => "EditableDropdown$parentID",
+					'Value' => $option->Title
+				)
+			);
 			$optionResult = [];
 			$optionResult['Label'] = $option->Title;
 			$optionResult['Value'] = $result->count();
