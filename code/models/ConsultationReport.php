@@ -79,7 +79,10 @@ class ConsultationReport extends DataObject {
 				array(
 					'ParentID' => $this->Consultation()->Submissions()->column('ID'),
 					// confirm the value actually belongs to the correct form field
-					'Name' => "EditableDropdown$parentID",
+					'Name' => array(
+						"EditableDropdown$parentID",
+						"EditableRadioField$parentID"
+					),
 					'Value' => $option->Title
 				)
 			);
