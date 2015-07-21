@@ -14,7 +14,7 @@ SubmittedFormField:
   extensions:
     - ConsultationSubmittedField
 
-UserDefinedForm_Controller:
+Consultation_Controller:
   extensions:
     - ConsultationFormExtension
 
