@@ -74,7 +74,8 @@ class ConsultationReport extends DataObject {
 
 		$options = $this->Field()->Options();
 		foreach($options as $option) {
-			$result = SubmittedFormField::get()->filter(array('ParentID' => $this->Consultation()->Submissions()->column('ID'), 'Value' => $option->Title));
+			$result = SubmittedFormField::get()->filter(array('ParentID' => $this->Consultation()->Submissions()->column('ID')))
+					->filterAny(array('Value' => $option->Title, 'Value:PartialMatch' => $option->Title));
 			$optionResult = [];
 			$optionResult['Label'] = $option->Title;
 			$optionResult['Value'] = $result->count();
