@@ -29,10 +29,10 @@ class JustGageReport extends ConsultationReportType {
 			$results[$option['Label']] = $option['Value'];
 			if ($option['Value'] > $json['value']) {
 				$json['value'] = $option['Value'];
-			} else {
-				$json['min'] = $option['Value'];
 			}
 		}
+		$json['label'] = min($results) . ' ' . array_search(min($results), $results);
+
 		return json_encode($json);
 	}	
 
