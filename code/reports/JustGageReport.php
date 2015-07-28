@@ -22,7 +22,6 @@ class JustGageReport extends ConsultationReportType {
 		$json['min'] = 0;
 		$json['value'] = 0;
 		$json['max'] = 0;
-		$json['title'] = $data->ReportTitle;
 		$results = array();
 		foreach($options as $option) {
 			$json['max'] += $option['Value'];
@@ -31,7 +30,8 @@ class JustGageReport extends ConsultationReportType {
 				$json['value'] = $option['Value'];
 			}
 		}
-		$json['label'] = min($results) . ' ' . array_search(min($results), $results);
+		// show the winning vote as the title
+		$json['title'] = array_search(max($results), $results);
 
 		return json_encode($json);
 	}	
