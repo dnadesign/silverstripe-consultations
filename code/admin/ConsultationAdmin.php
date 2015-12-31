@@ -2,7 +2,8 @@
 /**
  * @package consultation
  */
-class ConsultationAdmin extends ModelAdmin {
+class ConsultationAdmin extends ModelAdmin
+{
 
     private static $managed_models = array(
         'Consultation',
@@ -12,8 +13,9 @@ class ConsultationAdmin extends ModelAdmin {
     private static $url_segment = 'consultations';
     private static $menu_title = 'Consultations';
 
-    public function getEditForm($id = null, $fields = null) {
-        $form = parent::getEditForm($id , $fields);
+    public function getEditForm($id = null, $fields = null)
+    {
+        $form = parent::getEditForm($id, $fields);
 
         $listfield = $form->Fields()->fieldByName($this->modelClass);
         $listFieldConfig = $listfield->getConfig();
@@ -26,5 +28,4 @@ class ConsultationAdmin extends ModelAdmin {
 
         return $form;
     }
-
 }
