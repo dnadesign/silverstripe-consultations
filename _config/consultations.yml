@@ -21,3 +21,4 @@ Consultation_Controller:
 Consultation:
   allowed_reports:
     - DonutChartReport
+    - JustGageReport
